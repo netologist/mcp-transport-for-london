@@ -27,7 +27,13 @@ agent = Agent(
 )
 
 if __name__ == '__main__':
+    # Search Bus Stops
     res = agent.run_sync("Find bus stops near Piccadilly Circus")
     print("Result:\n")
     print(res.output)
+    
+    # # Get Route Info
+    # res = agent.run_sync("Tell me about bus route 190")
+    # print("Result:\n")
+    # print(res.output)
 

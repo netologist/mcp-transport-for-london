@@ -61,6 +61,49 @@ async def search_bus_stops(query: str) -> str:
             return f"❌ API error: {str(e)}"
 
 
+
+@mcp.tool()
+async def get_route_info(route_number: str) -> str:
+    """
+    Get detailed information about a specific bus route.
+    
+    Args:
+        route_number: Bus route number (e.g., '73', '159', 'N9')
+    
+    Returns:
+        Route information including origin and destination
+    """
+    url = f"{TFL_API_BASE}/Line/{route_number}/Route"
+    
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        try:
+            response = await client.get(url)
+            response.raise_for_status()
+            data = response.json()
+            
+            result = f"Route {route_number} Information\n"
+            result += "="*50 + "\n\n"
+            
+            route_sections = data.get('routeSections', [])
+            
+            if route_sections:
+                for section in route_sections:
+                    origin = section.get('originator', 'Unknown')
+                    destination = section.get('destination', 'Unknown')
+                    direction = section.get('direction', '')
+                    
+                    result += f"📍 {origin} → {destination}\n"
+                    result += f"   Direction: {direction}\n\n"
+            else:
+                result += "No route information found.\n"
+            
+            return result
+            
+        except httpx.HTTPError as e:
+            return f"Route not found or API error: {str(e)}"
+
+
+
 if __name__ == "__main__":
     mcp.settings.debug = True
     transport = "stdio"  # Default to stdio for MCP Inspector compatibility
