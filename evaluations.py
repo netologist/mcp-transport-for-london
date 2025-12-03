@@ -1,19 +1,15 @@
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
-from functools import cached_property
-from typing import Annotated, Any
+from typing import Any
 
-import yaml
-from client import agent
-from pydantic import Field
-from pydantic_ai import Agent, PromptedOutput
 from pydantic_evals import Case, Dataset
-from pydantic_evals.evaluators import EqualsExpected
-from typing_extensions import override
-from pydantic_evals.evaluators import Evaluator, EvaluatorContext
+from pydantic_evals.evaluators import (Evaluator,
+                                       EvaluatorContext)
 from pydantic_evals.otel.span_tree import SpanQuery
+
+from agent import create_agent
+from otel import enable_tracing
 
 @dataclass
 class AgentCalledTool(Evaluator[object, object, object]):
@@ -34,28 +30,35 @@ class AgentCalledTool(Evaluator[object, object, object]):
             )
         )
 
+
 tfl_dataset = Dataset[str, str, Any](
     cases=[
         Case(
             name="Find stops by location name",
             inputs="Find bus stops near Piccadilly Circus",
             expected_output=None,
-            evaluators=(AgentCalledTool(agent_name="tfl_agent", tool_name="search_bus_stops"),),
+            evaluators=(
+                AgentCalledTool(agent_name="tfl_agent", tool_name="search_bus_stops"),
+            ),
         ),
         Case(
             name="Get route details",
             inputs="Tell me about bus route 190",
             expected_output=None,
-            evaluators=(AgentCalledTool(agent_name="tfl_agent", tool_name="get_route_info"),),
+            evaluators=(
+                AgentCalledTool(agent_name="tfl_agent", tool_name="get_route_info"),
+            ),
         ),
     ],
     evaluators=[],
 )
 
 def main(text: str) -> str:
+    agent = create_agent()
     result = agent.run_sync(text)
     return result.output
 
 if __name__ == "__main__":
+    enable_tracing()
     report = tfl_dataset.evaluate_sync(main)
     report.print()

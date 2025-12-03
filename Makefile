@@ -77,16 +77,20 @@ test: ## Run all tests (currently runs evaluations)
 format: ## Format code with black and isort
 	@echo "$(GREEN)Formatting code...$(NC)"
 	$(UV) run black server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)black not installed, run: make add-dev PKG=black$(NC)"
-	$(UV) run isort server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)isort not installed, run: make add-dev PKG=isort$(NC)"
+	$(UV) run isort agent.py server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)isort not installed, run: make add-dev PKG=isort$(NC)"
 	@echo "$(GREEN)✓ Formatting complete$(NC)"
 
 lint: ## Lint code with ruff
 	@echo "$(GREEN)Linting code...$(NC)"
-	$(UV) run ruff check server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)ruff not installed, run: make add-dev PKG=ruff$(NC)"
+	$(UV) run ruff check agent.py server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)ruff not installed, run: make add-dev PKG=ruff$(NC)"
+
+fix-lint: ## Lint code with ruff
+	@echo "$(GREEN)Linting code...$(NC)"
+	$(UV) run ruff check --fix agent.py server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)ruff not installed, run: make add-dev PKG=ruff$(NC)"
 
 check: lint ## Run all checks (lint, type check)
 	@echo "$(GREEN)Running type checks...$(NC)"
-	$(UV) run mypy server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)mypy not installed, run: make add-dev PKG=mypy$(NC)"
+	$(UV) run mypy agent.py server.py client.py evaluations.py otel.py 2>/dev/null || echo "$(YELLOW)mypy not installed, run: make add-dev PKG=mypy$(NC)"
 
 dev-install: install ## Install development dependencies
 	@echo "$(GREEN)Installing development dependencies...$(NC)"
