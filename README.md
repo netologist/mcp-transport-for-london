@@ -196,6 +196,23 @@ res = agent.run_sync("Find bus stops near Piccadilly Circus")
 print(res.output)
 ```
 
+### `get_route_info`
+
+Get detailed information about a specific bus route.
+
+**Parameters:**
+- `route_number` (str): Bus route number (e.g., '73', '159', 'N9')
+
+**Returns:**
+- Route information including origin, destination, and direction for each route section
+
+**Example:**
+```python
+# Using the client
+res = agent.run_sync("Get information about bus route 73")
+print(res.output)
+```
+
 ## Configuration
 
 ### Server Configuration
