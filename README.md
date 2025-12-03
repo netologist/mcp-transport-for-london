@@ -42,6 +42,37 @@ make client
 
 This runs the Pydantic AI agent that queries bus stops near Piccadilly Circus.
 
+## Opik Integration (Local Deployment)
+
+This project supports [Opik](https://www.comet.com/docs/opik) for experiment tracking and evaluation. You can run Opik locally using Docker Compose.
+
+### Prerequisites for Opik
+
+- Docker and Docker Compose installed
+- Clone the Opik repository (outside this project):
+
+```bash
+# Clone the Opik repository
+git clone https://github.com/comet-ml/opik.git
+
+# Navigate to the opik folder
+
+cd opik
+
+# Start the Opik platform
+
+./opik.sh
+
+# Stop the Opik platform
+./opik.sh --stop
+```
+
+Opik will be available at [http://localhost:5173](http://localhost:5173)
+
+### Using Opik with Evaluations
+
+Once Opik is running, your evaluation traces will automatically be logged to the local Opik instance at `http://localhost:5173`.
+
 ## Available Commands
 
 ### Core Commands
