@@ -10,3 +10,11 @@ dependencies = [
     "mcp>=1.23.1",
     "pydantic-ai>=1.26.0",
 ]
+
+[dependency-groups]
+dev = [
+    "black>=25.11.0",
+    "isort>=7.0.0",
+    "mypy>=1.19.0",
+    "ruff>=0.14.7",
+]

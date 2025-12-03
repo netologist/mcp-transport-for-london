@@ -268,8 +268,8 @@ API Documentation: https://api.tfl.gov.uk
 
 ## License
 
-[Add your license here]
+[GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Contributing
 
-[Add contributing guidelines here]
+Contributions are welcome! Please open an issue or submit a pull request.
